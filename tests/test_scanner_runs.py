@@ -1,5 +1,6 @@
 import json
 import pickle
+from pathlib import Path
 
 from click.testing import CliRunner
 
@@ -8,7 +9,7 @@ from modelscan.modelscan import ModelScan
 from modelscan.reports import JSONReport
 
 
-def test_scanner_runs_include_clean_issues_errors_and_skips(tmp_path):
+def test_scanner_runs_include_clean_issues_errors_and_skips(tmp_path: Path) -> None:
     (tmp_path / "clean.pkl").write_bytes(pickle.dumps({"value": 1}))
     (tmp_path / "unsafe.pkl").write_bytes(b"cos\nsystem\n.")
     (tmp_path / "invalid.pkl").write_bytes(b"\x80")
@@ -42,7 +43,7 @@ def test_scanner_runs_include_clean_issues_errors_and_skips(tmp_path):
     assert second_report["summary"]["scanner_runs"][0]["source"] == "clean.pkl"
 
 
-def test_show_scanned_lists_completed_checks(tmp_path):
+def test_show_scanned_lists_completed_checks(tmp_path: Path) -> None:
     model = tmp_path / "clean.pkl"
     model.write_bytes(pickle.dumps({"value": 1}))
 
